@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 
 class SearchContainer extends Component {
+  constructor() {
+    super();
+    this.state = {
+      queryResultsArray: [],
+      searchField: '',
+      searched: false,
+    };
+  }
+
   render() {
     const getProductsFromQuery = async () => {
       const { searchField } = this.state;
@@ -18,14 +27,32 @@ class SearchContainer extends Component {
       ));
       this.setState({
         queryResultsArray: briefProdList,
+        searched: true,
       });
     };
+
     const handleChange = (event) => {
       const { target: { name, value } } = event;
       this.setState({
         [name]: value,
       });
     };
+
+    const { queryResultsArray, searched } = this.state;
+    const mappedQuery = queryResultsArray.map((result) => (
+      <div
+        key={ result.id }
+        data-testid="product"
+      >
+        <p>{ result.title }</p>
+        <img
+          src={ result.thumbnail }
+          alt={ result.title }
+        />
+        <p>{ `R$ ${result.price}` }</p>
+      </div>
+    ));
+    const shouldDisplayNotFound = searched ? 'Nenhum produto foi encontrado' : '';
 
     return (
       <>
@@ -48,6 +75,11 @@ class SearchContainer extends Component {
           onClick={ getProductsFromQuery }
           value="Pesquisar"
         />
+        <section
+          className="search-result-container"
+        >
+          {queryResultsArray.length === 0 ? shouldDisplayNotFound : mappedQuery}
+        </section>
       </>
     );
   }
