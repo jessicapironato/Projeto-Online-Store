@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Categories from './Categories';
 import SearchContainer from './SearchContainer';
 
 class Home extends Component {
@@ -16,6 +17,7 @@ class Home extends Component {
           Digite algum termo de pesquisa ou escolha uma categoria.
         </p>
         <SearchContainer />
+        <Categories />
       </>
     );
   }
