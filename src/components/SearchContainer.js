@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 
 class SearchContainer extends Component {
@@ -44,7 +45,17 @@ class SearchContainer extends Component {
         key={ result.id }
         data-testid="product"
       >
-        <p>{ result.title }</p>
+        <p>
+          {' '}
+          <Link
+            data-testid="product-detail-link"
+            to={ `/ProductDetails/:id ${result.id} ` }
+          >
+            { result.title }
+
+          </Link>
+
+        </p>
         <img
           src={ result.thumbnail }
           alt={ result.title }
