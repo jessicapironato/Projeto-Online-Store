@@ -10,19 +10,37 @@ class ProductDetails extends Component {
     price: '',
   };
 
-  getProduct = async (id) => {
-    const API_GET_PRODUCT = await fetch(`https://api.mercadolibre.com/items/${id}`);
-    const dataProductID = await fetch(URL_API);
-    const data = await dataProductID.json();
-    this.setState({
+  componentDidMount() {
+    const { match: { params: { id } } } = this.props;
+    const prodID = id.split(' ');
+    this.getProduct(prodID[1]);
+  }
 
-    });
+  getProduct = (id) => {
+    this.setState(
+      { name: '',
+        image: '',
+        price: '',
+      },
+      async () => {
+        const API_GET_PRODUCT = await fetch(`https://api.mercadolibre.com/items/${id}`);
+        const dataProductID = await API_GET_PRODUCT.json();
+        const { title, price, pictures } = dataProductID;
+        // chamar image com propriedade pictures (array de objetos)
+        console.log(pictures[0].url);
+        this.setState({
+          name: title,
+          image: pictures[0].url,
+          price,
+        });
+      },
+    );
   };
 
   render() {
     const { name, image, price } = this.state;
-    const { match: { params: { id } } } = this.props;
-    console.log(id);
+    // const qualquer = [...image];
+    // const { url } = qualquer[0];
     return (
 
       <>
@@ -57,6 +75,6 @@ ProductDetails.propTypes = {
     params: PropTypes.shape({
       id: PropTypes.string,
     }),
-  }).isRequired,
-};
+  }),
+}.isRequired;
 export default ProductDetails;

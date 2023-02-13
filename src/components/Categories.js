@@ -58,7 +58,7 @@ class Categories extends React.Component {
         <p>
           <Link
             data-testid="product-detail-link"
-            to={ `/ProductDetails/:id ${result.id} ` }
+            to={ `/ProductDetails/:${result.id} ` }
           >
             { result.title }
 
