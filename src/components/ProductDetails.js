@@ -15,7 +15,7 @@ class ProductDetails extends Component {
     const dataProductID = await fetch(URL_API);
     const data = await dataProductID.json();
     this.setState({
-     
+
     });
   };
 
