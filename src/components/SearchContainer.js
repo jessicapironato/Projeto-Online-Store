@@ -8,8 +8,19 @@ class SearchContainer extends Component {
       queryResultsArray: [],
       searchField: '',
       searched: false,
+      prodToCart: [],
     };
   }
+
+  saveToCart = (event) => {
+    const { target: { id } } = event;
+    const { queryResultsArray, prodToCart } = this.state;
+    const toCart = queryResultsArray.find((element) => element.id === id);
+    this.setState({
+      prodToCart: [...prodToCart, toCart],
+    });
+    localStorage.setItem('cart', JSON.stringify(prodToCart));
+  };
 
   render() {
     const getProductsFromQuery = async () => {
@@ -50,6 +61,14 @@ class SearchContainer extends Component {
           alt={ result.title }
         />
         <p>{ `R$ ${result.price}` }</p>
+        <button
+          id={ result.id }
+          type="button"
+          data-testid="product-add-to-cart"
+          onClick={ this.saveToCart }
+        >
+          Adicionar ao Carrinho
+        </button>
       </div>
     ));
     const shouldDisplayNotFound = searched ? 'Nenhum produto foi encontrado' : '';
