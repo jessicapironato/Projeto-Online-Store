@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 class Categories extends React.Component {
@@ -6,6 +7,7 @@ class Categories extends React.Component {
     categories: [],
     option: 'Acessórios',
     renderProd: [],
+    prodToCart: [],
   };
 
   componentDidMount() {
@@ -18,6 +20,20 @@ class Categories extends React.Component {
     this.setState({
       categories: catResp,
     });
+  };
+
+  saveToCart = (event) => {
+    const { target: { id } } = event;
+    const { handleCartList } = this.props;
+    const { renderProd, prodToCart } = this.state;
+    const toCart = renderProd.find((element) => element.id === id);
+    this.setState(
+      {
+        prodToCart: [...prodToCart, toCart],
+      },
+      handleCartList(toCart),
+    );
+    localStorage.setItem('cart', JSON.stringify(prodToCart));
   };
 
   getProductsFromCatQuery = async () => {
@@ -41,8 +57,8 @@ class Categories extends React.Component {
   };
 
   handleChange = (event) => {
-    const { target: { value, id } } = event;
-    console.log(id);
+    const { target: { value } } = event;
+    console.log('Categories');
     this.setState({
       option: value,
     }, this.getProductsFromCatQuery);
@@ -70,6 +86,14 @@ class Categories extends React.Component {
           alt={ result.title }
         />
         <p>{ `R$ ${result.price}` }</p>
+        <button
+          type="button"
+          data-testid="product-add-to-cart"
+          id={ result.id }
+          onClick={ this.saveToCart }
+        >
+          Adicionar ao Carrinho
+        </button>
 
       </div>
 
@@ -104,5 +128,9 @@ class Categories extends React.Component {
     );
   }
 }
+
+Categories.propTypes = {
+  handleCartList: PropTypes.func.isRequired,
+};
 
 export default Categories;
