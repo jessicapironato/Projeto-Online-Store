@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class Categories extends React.Component {
   state = {
@@ -70,7 +71,16 @@ class Categories extends React.Component {
         key={ result.id }
         data-testid="product"
       >
-        <p>{ result.title }</p>
+        <p>
+          <Link
+            data-testid="product-detail-link"
+            to={ `/ProductDetails/:${result.id} ` }
+          >
+            { result.title }
+
+          </Link>
+
+        </p>
         <img
           src={ result.thumbnail }
           alt={ result.title }
@@ -84,7 +94,9 @@ class Categories extends React.Component {
         >
           Adicionar ao Carrinho
         </button>
+
       </div>
+
     ));
     const mappedCat = categories
       .map((cat) => ((
@@ -111,6 +123,7 @@ class Categories extends React.Component {
         </label>
 
         {renderProd.length === 0 ? '' : mappedProd}
+
       </>
     );
   }
