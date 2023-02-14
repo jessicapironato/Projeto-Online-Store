@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Categories from './Categories';
+import Review from './Review';
 
 class ProductDetails extends Component {
   state = {
@@ -67,7 +68,6 @@ class ProductDetails extends Component {
           { price }
 
         </p>
-        <Categories />
 
         <label htmlFor="btnAdd">
           <button
@@ -91,7 +91,7 @@ class ProductDetails extends Component {
 
           </Link>
         </label>
-
+        <Review />
       </>
     );
   }
