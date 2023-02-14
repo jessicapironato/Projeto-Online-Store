@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
+import { Link } from 'react-router-dom';
 import Categories from './Categories';
 
 class ProductDetails extends Component {
@@ -8,6 +8,8 @@ class ProductDetails extends Component {
     name: '',
     image: '',
     price: '',
+    prodObj: {},
+    savedToCart: [],
   };
 
   componentDidMount() {
@@ -15,6 +17,13 @@ class ProductDetails extends Component {
     const prodID = id.split(' ');
     this.getProduct(prodID[1]);
   }
+
+  saveToCart = () => {
+    const { prodObj } = this.state;
+    this.setState({
+      savedToCart: [prodObj],
+    });
+  };
 
   getProduct = (id) => {
     this.setState(
@@ -32,13 +41,14 @@ class ProductDetails extends Component {
           name: title,
           image: pictures[0].url,
           price,
+          prodObj: dataProductID,
         });
       },
     );
   };
 
   render() {
-    const { name, image, price } = this.state;
+    const { name, image, price, savedToCart } = this.state;
     // const qualquer = [...image];
     // const { url } = qualquer[0];
     return (
@@ -58,12 +68,29 @@ class ProductDetails extends Component {
 
         </p>
         <Categories />
-        <button data-testid="shopping-cart-button">
 
-          Clique aqui
-          {' '}
+        <label htmlFor="btnAdd">
+          <button
+            id="btnAdd"
+            data-testid="product-detail-add-to-cart"
+            onClick={ this.saveToCart }
+          >
+            Adicionar ao Carrinho
+          </button>
+        </label>
+        <label htmlFor="btnCart">
+          <Link
+            to={ { pathname: '/cart', state: savedToCart } }
+          >
+            <button
+              id="btnCart"
+              data-testid="shopping-cart-button"
+            >
+              Ir ao Carrinho
+            </button>
 
-        </button>
+          </Link>
+        </label>
 
       </>
     );
