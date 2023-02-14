@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 
 class SearchContainer extends Component {
@@ -14,11 +15,15 @@ class SearchContainer extends Component {
 
   saveToCart = (event) => {
     const { target: { id } } = event;
+    const { handleCartList } = this.props;
     const { queryResultsArray, prodToCart } = this.state;
     const toCart = queryResultsArray.find((element) => element.id === id);
-    this.setState({
-      prodToCart: [...prodToCart, toCart],
-    });
+    this.setState(
+      {
+        prodToCart: [...prodToCart, toCart],
+      },
+      handleCartList(toCart),
+    );
     localStorage.setItem('cart', JSON.stringify(prodToCart));
   };
 
@@ -103,5 +108,9 @@ class SearchContainer extends Component {
     );
   }
 }
+
+SearchContainer.propTypes = {
+  handleCartList: PropTypes.func.isRequired,
+};
 
 export default SearchContainer;

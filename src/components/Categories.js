@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Categories extends React.Component {
   state = {
@@ -22,11 +23,15 @@ class Categories extends React.Component {
 
   saveToCart = (event) => {
     const { target: { id } } = event;
+    const { handleCartList } = this.props;
     const { renderProd, prodToCart } = this.state;
     const toCart = renderProd.find((element) => element.id === id);
-    this.setState({
-      prodToCart: [...prodToCart, toCart],
-    });
+    this.setState(
+      {
+        prodToCart: [...prodToCart, toCart],
+      },
+      handleCartList(toCart),
+    );
     localStorage.setItem('cart', JSON.stringify(prodToCart));
   };
 
@@ -110,5 +115,9 @@ class Categories extends React.Component {
     );
   }
 }
+
+Categories.propTypes = {
+  handleCartList: PropTypes.func.isRequired,
+};
 
 export default Categories;
