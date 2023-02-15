@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 class Review extends Component {
   state = {
     email: '',
-    reviewText: '',
+    text: '',
     rating: '',
     toValidation: false,
     valid: '',
@@ -23,18 +23,21 @@ class Review extends Component {
     });
     const validEmail = /^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$/;
     const { productID } = this.props;
-    const { email, rating, reviewText } = this.state;
+    const { email, rating, text } = this.state;
+    const boolRating = rating !== '';
     const validateEmail = validEmail.test(email);
-    const validateForm = [validateEmail, rating];
-    const returnSome = validateForm.some((input) => input === '');
+    const validateForm = [validateEmail, boolRating];
+    const returnSome = validateForm.some((input) => input === false);
     this.setState({
       valid: !returnSome,
-      reviewObj: {
-        productID,
-        email,
-        rating,
-        reviewText,
-      },
+    }, () => {
+      const { valid } = this.state;
+      if (valid) {
+        const reviewObj = {
+          email, rating, text,
+        };
+        localStorage.setItem(`${productID}`, JSON.stringify(reviewObj));
+      }
     });
   };
 
