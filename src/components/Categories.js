@@ -58,7 +58,6 @@ class Categories extends React.Component {
 
   handleChange = (event) => {
     const { target: { value } } = event;
-    console.log('Categories');
     this.setState({
       option: value,
     }, this.getProductsFromCatQuery);

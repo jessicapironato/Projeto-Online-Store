@@ -17,6 +17,16 @@ class Review extends Component {
     });
   };
 
+  handleLocalStorage = () => {
+    const { valid } = this.state;
+    if (valid) {
+      const reviewObj = {
+        email, rating, text,
+      };
+      localStorage.setItem(`${productID}`, JSON.stringify(reviewObj));
+    }
+  };
+
   handleSubmit = () => {
     this.setState({
       toValidation: true,
@@ -30,15 +40,7 @@ class Review extends Component {
     const returnSome = validateForm.some((input) => input === false);
     this.setState({
       valid: !returnSome,
-    }, () => {
-      const { valid } = this.state;
-      if (valid) {
-        const reviewObj = {
-          email, rating, text,
-        };
-        localStorage.setItem(`${productID}`, JSON.stringify(reviewObj));
-      }
-    });
+    }, this.handleLocalStorage());
   };
 
   render() {
