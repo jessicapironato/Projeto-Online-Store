@@ -18,10 +18,19 @@ class Review extends Component {
     });
   };
 
+  handleClearInputs = () => {
+    this.setState({
+      email: '',
+      text: '',
+      rating: '',
+    });
+  };
+
   handleStorage = (validSubmit) => {
     const { productID } = this.props;
     const { email, rating, text } = this.state;
     if (validSubmit) {
+      this.handleClearInputs();
       const reviewObj = {
         email, rating, text,
       };
@@ -49,7 +58,7 @@ class Review extends Component {
   render() {
     const ratingArray = ['1', '2', '3', '4', '5'];
     const { productID } = this.props;
-    const { valid, toValidation } = this.state;
+    const { email, text, valid, toValidation } = this.state;
     const localStorageReview = JSON.parse(localStorage.getItem(`${productID}`)) || '';
     const errorMsg = toValidation ? <p data-testid="error-msg">Campos inválidos</p> : '';
     return (
@@ -63,6 +72,7 @@ class Review extends Component {
               id="email"
               data-testid="product-detail-email"
               onChange={ this.handleChange }
+              value={ email }
             />
           </label>
 
@@ -90,6 +100,7 @@ class Review extends Component {
               id="text"
               data-testid="product-detail-evaluation"
               onChange={ this.handleChange }
+              value={ text }
             />
           </label>
 
