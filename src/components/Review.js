@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import RenderReviewList from './RenderReviewList';
 
 class Review extends Component {
   state = {
@@ -47,7 +48,9 @@ class Review extends Component {
 
   render() {
     const ratingArray = ['1', '2', '3', '4', '5'];
+    const { productID } = this.props;
     const { valid, toValidation } = this.state;
+    const localStorageReview = JSON.parse(localStorage.getItem(`${productID}`)) || '';
     const errorMsg = toValidation ? <p data-testid="error-msg">Campos inválidos</p> : '';
     return (
       <>
@@ -101,7 +104,8 @@ class Review extends Component {
         <div
           className="review-card"
         >
-          {valid ? <span>Inputs</span> : errorMsg }
+          {valid ? '' : errorMsg}
+          {localStorageReview ? <RenderReviewList productID={ productID } /> : errorMsg }
         </div>
       </>
     );
