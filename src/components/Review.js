@@ -17,13 +17,16 @@ class Review extends Component {
     });
   };
 
-  handleLocalStorage = () => {
-    const { valid } = this.state;
-    if (valid) {
+  handleStorage = (validSubmit) => {
+    const { productID } = this.props;
+    const { email, rating, text } = this.state;
+    if (validSubmit) {
       const reviewObj = {
         email, rating, text,
       };
-      localStorage.setItem(`${productID}`, JSON.stringify(reviewObj));
+      const reviewStored = JSON.parse(localStorage.getItem(`${productID}`)) || [];
+      const newReviews = [...reviewStored, reviewObj];
+      localStorage.setItem(`${productID}`, JSON.stringify(newReviews));
     }
   };
 
@@ -32,15 +35,14 @@ class Review extends Component {
       toValidation: true,
     });
     const validEmail = /^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$/;
-    const { productID } = this.props;
-    const { email, rating, text } = this.state;
+    const { email, rating } = this.state;
     const boolRating = rating !== '';
     const validateEmail = validEmail.test(email);
     const validateForm = [validateEmail, boolRating];
     const returnSome = validateForm.some((input) => input === false);
     this.setState({
       valid: !returnSome,
-    }, this.handleLocalStorage());
+    }, this.handleStorage(!returnSome));
   };
 
   render() {
@@ -82,7 +84,7 @@ class Review extends Component {
             Campo de Texto para Aval
             <input
               type="text"
-              id="reviewText"
+              id="text"
               data-testid="product-detail-evaluation"
               onChange={ this.handleChange }
             />
