@@ -116,7 +116,7 @@ class Review extends Component {
           className="review-card"
         >
           {valid ? '' : errorMsg}
-          {localStorageReview ? <RenderReviewList productID={ productID } /> : errorMsg }
+          {localStorageReview ? <RenderReviewList productID={ productID } /> : '' }
         </div>
       </>
     );
