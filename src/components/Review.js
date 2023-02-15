@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class Review extends Component {
   state = {
@@ -21,12 +22,19 @@ class Review extends Component {
       toValidation: true,
     });
     const validEmail = /^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$/;
-    const { email, reviewText, rating } = this.state;
+    const { productID } = this.props;
+    const { email, rating, reviewText } = this.state;
     const validateEmail = validEmail.test(email);
-    const validateForm = [validateEmail, reviewText, rating];
+    const validateForm = [validateEmail, rating];
     const returnSome = validateForm.some((input) => input === '');
     this.setState({
       valid: !returnSome,
+      reviewObj: {
+        productID,
+        email,
+        rating,
+        reviewText,
+      },
     });
   };
 
@@ -86,11 +94,15 @@ class Review extends Component {
         <div
           className="review-card"
         >
-          {valid ? <p>Inputs</p> : errorMsg }
+          {valid ? <span>Inputs</span> : errorMsg }
         </div>
       </>
     );
   }
 }
+
+Review.propTypes = {
+  productID: PropTypes.string.isRequired,
+};
 
 export default Review;

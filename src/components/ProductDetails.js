@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import Categories from './Categories';
 import Review from './Review';
 
 class ProductDetails extends Component {
@@ -49,9 +48,7 @@ class ProductDetails extends Component {
   };
 
   render() {
-    const { name, image, price, savedToCart } = this.state;
-    // const qualquer = [...image];
-    // const { url } = qualquer[0];
+    const { name, image, price, savedToCart, prodObj } = this.state;
     return (
 
       <>
@@ -91,7 +88,7 @@ class ProductDetails extends Component {
 
           </Link>
         </label>
-        <Review />
+        <Review productID={ prodObj.id } />
       </>
     );
   }
