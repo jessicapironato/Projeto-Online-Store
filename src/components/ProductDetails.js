@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import Categories from './Categories';
+import Review from './Review';
 
 class ProductDetails extends Component {
   state = {
@@ -35,8 +35,6 @@ class ProductDetails extends Component {
         const API_GET_PRODUCT = await fetch(`https://api.mercadolibre.com/items/${id}`);
         const dataProductID = await API_GET_PRODUCT.json();
         const { title, price, pictures } = dataProductID;
-        // chamar image com propriedade pictures (array de objetos)
-        console.log(pictures[0].url);
         this.setState({
           name: title,
           image: pictures[0].url,
@@ -48,9 +46,7 @@ class ProductDetails extends Component {
   };
 
   render() {
-    const { name, image, price, savedToCart } = this.state;
-    // const qualquer = [...image];
-    // const { url } = qualquer[0];
+    const { name, image, price, savedToCart, prodObj } = this.state;
     return (
 
       <>
@@ -67,7 +63,6 @@ class ProductDetails extends Component {
           { price }
 
         </p>
-        <Categories />
 
         <label htmlFor="btnAdd">
           <button
@@ -91,7 +86,7 @@ class ProductDetails extends Component {
 
           </Link>
         </label>
-
+        <Review productID={ prodObj.id } />
       </>
     );
   }
